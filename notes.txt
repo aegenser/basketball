@@ -1,0 +1,82 @@
+We start with team A in possession:
+
+Missed 2-pt -> offensive rebound -> possession continues
+            -> defensive rebound -> possession ends, 0 points
+
+Missed 3-pt -> offensive rebound -> possession continues
+            -> defensive rebound -> possession ends, 0 points
+
+Makes 2-pt -> possession ends, 2 points
+           -> shooting foul -> free throw -> possession ends, 2 or 3 points
+
+Makes 3-pt -> possession ends, 3 points
+           -> shooting foul -> free throw -> possession ends, 3 or 4 points
+
+Turnover -> possession ends, 0 points
+
+Personal Foul by B -> possession continues
+                   -> free throws
+
+Personal Foul by A -> turnover
+
+---
+New Idea:
+There are only 3 things that end possession, turnover, defensive rebound, or shot made
+
+Only thing that is complicated,
+If a shot is made, and also there is a shooting foul, a free throw made is
+counted towards the previous possession.
+If the free throw is not made, and there is an offensive foul the possession still continues
+
+End of the quarter is also a possession ender
+
+Let's write some pseudocode
+
+homeOnOff (true if Home team is on offense, false if Home team is on defense)
+jumpballResult (true if home team got it, false if away team got it)
+duringFreeThrows (checks if substitutions should count for this or next possession)
+currentPlayersHome
+currentPlayersAway
+nextPlayersHome
+nextPlayersAway
+firstPossession
+currentPossession
+
+
+beginning of game -
+set current and next Players home and away
+search for which team got possession after jumpball, and set jumpballResult and homeOnOff
+duringFreeThrows = false
+
+
+while loop (condition is not end of 4th quarter) {
+
+check if end of quarter
+end possession with 0
+if end of 1st or 3rd, skip a row and set homeOnOff to (not jumpballResult)
+if end of 2nd, skip a row and set homeOnOff to jumpballResult
+
+check away for substitutions, check home for substitutions
+if during duringFreeThrows, then switch next not current
+
+check if a 2/3 pt made (offense column)
+check if there was a shooting foul
+if not, end possession with 2/3 points
+if there is, check for free throw
+if offensive rebound -> same team has possession but new possession
+if defensive rebound or made -> different team has possession
+
+check if there are free throws (offense column)
+points depend on how many, one two or three
+on last one:
+if offensive rebound -> same team has possession but new possession
+if defensive rebound or made -> different team has possession
+
+check if there is a turnover (offense column)
+end possession as is
+start possession with defense
+
+check if there is a defensive rebound
+end possession as is
+start possession with defense
+}
