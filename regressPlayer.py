@@ -86,11 +86,6 @@ def main():
                     dfplayerDef.loc[i] = [round(skill,1), totalResult / n]
                     i += 1
 
-            dfplayerDef.to_csv('defense.csv', index=False)
-
-
-
-
             dfplayerOff = pd.DataFrame(columns = columnNames)
             i = 0
             for skill in skillOff:
@@ -99,46 +94,25 @@ def main():
                     dfplayerOff.loc[i] = [round(skill,1), totalResult / n]
                     i += 1
 
-            dfplayerOff.to_csv('offense.csv', index=False)
-
             x1 = dfplayerDef['skill']
             y1 = dfplayerDef['result']
 
-            # x1 = [1,2,3]
-            # y1 = [2,3,4]
             x1 = x1.reshape(-1, 1)
             y1 = y1.reshape(-1, 1)
-
-            # print(len(x1))
-            # print(len(y1))
 
             regrDef = LinearRegression()
             regrDef.fit(x1, y1)
 
-            # print(regrDef.predict(0))
-            # print(regrDef.predict(1) - regrDef.predict(0))
-            # if regrDef.predict(1) - regrDef.predict(0) > 0:
-            #     print('boo')
-            # else:
-            #     print('yay')
             x2 = dfplayerOff['skill']
             y2 = dfplayerOff['result']
-            #
+
             x2 = x2.reshape(-1, 1)
             y2 = y2.reshape(-1, 1)
 
             regrOff = LinearRegression()
             regrOff.fit(x2, y2)
 
-            # print(regrOff.predict(0))
-            # print(regrOff.predict(1) - regrOff.predict(0))
-            # if regrOff.predict(1) - regrOff.predict(0) > 0:
-            #     print('yay')
-            # else:
-            #     print('boo')
-
             print(currentPlayer)
-            print((regrOff.predict(0)[0][0], regrDef.predict(0)[0][0]))
             players2[currentPlayer] = (regrOff.predict(0)[0][0], regrDef.predict(0)[0][0])
 
     i = 0
@@ -147,7 +121,7 @@ def main():
         dfplayersNew.loc[i] = [player, offense, defense]
         i += 1
 
-    dfplayersNew.to_csv('playersNew.csv', index=False)
+    dfplayersNew.to_csv('playersRegressed.csv', index=False)
 
 if __name__ == '__main__':
     main()

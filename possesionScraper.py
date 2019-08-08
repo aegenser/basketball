@@ -174,14 +174,9 @@ def scrapeQuarterStarters(year, month, day, team):
                     (havegoneinHome[whichQuarter-2]).append(playerIn)
         row = row.find_next('tr')
 
-    #print(startersHome)
-    #print(havegoneinHome)
     for num, starters in enumerate(startersHome):
         i = 0
         while(len(starters) < 5):
-            #print(num)
-            #print(starters)
-            #print(havegoneinHome[num-1])
             if (playersHome[i].tag not in starters) and \
                (playersHome[i].tag not in havegoneinHome[num-1]):
                 starters.append(playersHome[i].tag)
@@ -215,8 +210,6 @@ def scrapePossession(year, month, day, team):
     amountOfErrors  = 0
 
     (startersHome, startersAway) = scrapeQuarterStarters(year, month, day, team)
-    #print(startersHome)
-    #print(startersAway)
     whichQuarter = 1;
     #homeOnOff -- true if Home team is on offense, false if Home team is on defense
     #jumpballResult -- true if home team got it, false if away team got it
@@ -247,8 +240,6 @@ def scrapePossession(year, month, day, team):
           ("End of 4th" not in findAwayCol(row).string))):
         if((findAwayCol(row).string != None) \
            and ("End of" in findAwayCol(row).string)):
-            #print(currentPlayersAway)
-            #print(currentPlayersHome)
             if homeOnOff:
                 newPossession = Possession(copy.copy(currentPlayersHome), \
                                            copy.copy(currentPlayersAway))
@@ -259,21 +250,16 @@ def scrapePossession(year, month, day, team):
             currentPoints = 0
             currentPossession.nextPossession = newPossession
             currentPossession = newPossession
-            #print(findAwayCol(row).string)
             row = row.find_next('tr')
-            #print(findAwayCol(row).string)
             if("2nd" in findAwayCol(row).string):
                 homeOnOff = not jumpballResult
                 whichQuarter = 2;
-                #print('End of First')
             elif("3rd" in findAwayCol(row).string):
                 homeOnOff = not jumpballResult
                 whichQuarter = 3;
-                #print('End of Second')
             else:
                 homeOnOff = jumpballResult
                 whichQuarter = 4;
-                #print('End of Third')
             currentPlayersAway = copy.copy(startersAway[whichQuarter - 1])
             nextPlayersAway = copy.copy(startersAway[whichQuarter - 1])
             currentPlayersHome = copy.copy(startersHome[whichQuarter - 1])
@@ -284,7 +270,6 @@ def scrapePossession(year, month, day, team):
             playerOut = playerIn.find_next('a')
             playerIn = playerIn.get('href')[11:-5]
             playerOut = playerOut.get('href')[11:-5]
-            #print("sub " + playerIn + " for " + playerOut)
             if playerIn in currentPlayersAway:
                 amountOfErrors += 1
             if playerOut not in currentPlayersAway:
@@ -295,7 +280,6 @@ def scrapePossession(year, month, day, team):
                     break
             if not duringFreeThrows:
                 currentPlayersAway = copy.copy(nextPlayersAway)
-            #print(currentPlayersAway)
         elif 'Jump ball' in findAwayCol(row).text:
             jumpballPlayer = findAwayCol(row).find_next('a').find_next('a') \
                              .find_next('a').get('href')
@@ -331,7 +315,6 @@ def scrapePossession(year, month, day, team):
                     break
             if not duringFreeThrows:
                 currentPlayersHome = copy.copy(nextPlayersHome)
-            #print(currentPlayersHome)
         elif('Turnover' in findHomeCol(row).text or \
              'Turnover' in findAwayCol(row).text):
              if homeOnOff:
@@ -430,24 +413,6 @@ def scrapePossession(year, month, day, team):
                 currentPossession.nextPossession = newPossession
                 currentPossession = newPossession
                 homeOnOff = not homeOnOff
-        # elif 'Jump ball' in findAwayCol(row).text:
-        #     jumpballPlayer = findAwayCol(row).find_next('a').find_next('a') \
-        #                      .find_next('a').get('href')
-        #     jumpballPlayer = jumpballPlayer[11:-5]
-        #     if ((jumpballPlayer in currentPlayersAway) and \
-        #        (homeOnOff)) or ((jumpballPlayer in currentPlayersHome) and \
-        #        (not homeOnOff)):
-        #        if homeOnOff:
-        #            newPossession = Possession(copy.copy(currentPlayersHome), \
-        #                                       copy.copy(currentPlayersAway))
-        #        else:
-        #            newPossession = Possession(copy.copy(currentPlayersAway), \
-        #                                       copy.copy(currentPlayersHome))
-        #        newPossession.addPoints(currentPoints)
-        #        currentPoints = 0
-        #        currentPossession.nextPossession = newPossession
-        #        currentPossession = newPossession
-        #        homeOnOff = not homeOnOff
         # else:
         #     print(findAwayCol(row).text + ' | ' + findHomeCol(row).text)
 
@@ -487,7 +452,6 @@ def main():
              'DAL', 'MIN', 'NOP', 'LAL', 'CHO', 'MEM', 'WAS', 'ATL', 'CHI', \
              'PHO', 'NYK', 'CLE']
 
-    #(possessions, amountOfErrors) = scrapePossession('2019', '04', '05', 'CHO')
     columnNames = ['offense1', 'offense2', 'offense3', 'offense4', 'offense5',\
                    'defense1', 'defense2', 'defense3', 'defense4', 'defense5',\
                    'result']
@@ -535,6 +499,6 @@ def main():
         if month == 4 and day == 12 and year == 2019:
             break
 
-    df.to_csv('output.csv', index=False)
+    df.to_csv('possessions.csv', index=False)
 if __name__ == '__main__':
     main()

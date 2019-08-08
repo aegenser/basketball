@@ -15,7 +15,6 @@ def scrapePlayer(player):
     div = body.find(id = 'all_advanced')
     div = div.find_next('div').next_sibling.next_sibling.next_sibling.next_sibling
     strTable = str(div)
-    #print(strTable)
     newSoup = bsoup(strTable, 'lxml')
     newBody = newSoup.body
     tableBody = newBody.find('tbody')
@@ -46,12 +45,9 @@ def main():
                 players[player] = (obpm, dbpm, numOfPos + 1)
                 print(player + ' ' + str(numOfPos + 1))
 
-    #print(posplayers)
     # (obpm, dbpm) = scrapePlayer('butleji01')
     # players['butleji01'] = (obpm, dbpm, 1)
-    #players['butleji01'] = scrapePlayer('butleji01')
-    #print(players['butleji01'])
-    #print('notjimmy' in players)
+    # players['butleji01'] = scrapePlayer('butleji01')
     columnNames = ['playerid', 'offense', 'defense', 'numOfPos']
     i = 0
     dfplayers = pd.DataFrame(columns = columnNames)
@@ -61,7 +57,7 @@ def main():
         i += 1
 
     dfplayers.to_csv('players.csv', index=False)
-    print(highestPlayer)
+    print('player with highest number: ' + highestPlayer)
 
 
 if __name__ == '__main__':
