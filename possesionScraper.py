@@ -499,6 +499,6 @@ def main():
         if month == 4 and day == 12 and year == 2019:
             break
 
-    df.to_csv('possessions.csv', index=False)
+    df.to_csv('possesions.csv', index=False)
 if __name__ == '__main__':
     main()
