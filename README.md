@@ -38,7 +38,7 @@ Uhh... So these aren't exactly the results I was hoping for. The only one that f
 1. **Clean up code and add more documentation**
    - Specifically, I know there are some variable names that could be changed for comprehension. Additionally, documentation is very sparse. Especially since this is tailored so heavily to an outside source, I need to explain a lot of what I am doing and why.
 2. **Better testing**
-    - One reason the project may not have worked as planed is perhaps the data I scraped is wrong. I tried to do as much testing as was feasible at the time, but even in one game there are over 200 possessions to compare to the result, which was rather restrictive.
+    - One reason the project may not have worked as planned is perhaps the data I scraped is wrong. I tried to do as much testing as was feasible at the time, but even in one game there are over 200 possessions to compare to the result, which was rather restrictive.
 3. **Research if there better, but similar methods**
     - At first glance, something exactly like this has not been attempted, but perhaps there are similar ideas available to consult. Also, I could ask around to people that I know who are more familiar with statistical models.
 4. **Retool the project**
